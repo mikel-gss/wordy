@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wordy! — Cosy Pop Word Guessing Game</title>
+
+  <!-- Google Fonts: Nunito (Rounded, friendly typeface) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Decorative colourful top bar -->
+  <div class="top-bar" aria-hidden="true"></div>
+
+  <!-- Header section -->
+  <header>
+    <div class="header-content">
+      <span class="emoji" aria-hidden="true">🟩</span>
+      <h1>Wordy<span class="dot">!</span></h1>
+    </div>
+  </header>
+
+  <!-- Main game container -->
+  <main class="game" id="game">
+
+    <!-- Toast Notification for Incomplete/Invalid Words -->
+    <div id="toast" class="toast hidden" aria-live="assertive" role="alert"></div>
+
+    <!-- Status message pill -->
+    <div class="status-container">
+      <p class="status" id="game-status" aria-live="polite">
+        ✏️ Guess 1 of 6
+      </p>
+    </div>
+
+    <!-- 6-row by 5-column game grid -->
+    <section class="grid" id="grid" role="grid" aria-label="Word guess grid">
+
+      <!-- Row 1: Active initial row -->
+      <div class="grid-row" role="row" aria-label="Row 1">
+        <div class="tile active" role="gridcell" aria-label="empty"></div>
+        <div class="tile active" role="gridcell" aria-label="empty"></div>
+        <div class="tile active" role="gridcell" aria-label="empty"></div>
+        <div class="tile active" role="gridcell" aria-label="empty"></div>
+        <div class="tile active" role="gridcell" aria-label="empty"></div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="grid-row" role="row" aria-label="Row 2">
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="grid-row" role="row" aria-label="Row 3">
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="grid-row" role="row" aria-label="Row 4">
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+      </div>
+
+      <!-- Row 5 -->
+      <div class="grid-row" role="row" aria-label="Row 5">
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+      </div>
+
+      <!-- Row 6 -->
+      <div class="grid-row" role="row" aria-label="Row 6">
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+        <div class="tile" role="gridcell" aria-label="empty"></div>
+      </div>
+
+    </section>
+
+    <!-- Hint button area -->
+    <div class="hint-area">
+      <button class="hint-btn" id="hint-btn" disabled aria-label="Hint (available after 3 guesses)">💡 Get a Hint!</button>
+      <span class="hint-caption" id="hint-caption">Available after 3 guesses · one use only</span>
+    </div>
+
+    <!-- Game message area & Play Again button (Hidden during active gameplay) -->
+    <section class="message-area hidden" id="message-area" aria-live="polite">
+      <p class="message-text" id="message-text"></p>
+      <button class="play-again-btn" id="play-again-btn" aria-label="Play again with a new word">🔄 Play Again</button>
+    </section>
+
+    <!-- On-screen QWERTY keyboard -->
+    <nav class="keyboard" id="keyboard" aria-label="On-screen keyboard">
+
+      <!-- Keyboard Row 1 -->
+      <div class="keyboard-row">
+        <button class="key" data-key="q">Q</button>
+        <button class="key" data-key="w">W</button>
+        <button class="key" data-key="e">E</button>
+        <button class="key" data-key="r">R</button>
+        <button class="key" data-key="t">T</button>
+        <button class="key" data-key="y">Y</button>
+        <button class="key" data-key="u">U</button>
+        <button class="key" data-key="i">I</button>
+        <button class="key" data-key="o">O</button>
+        <button class="key" data-key="p">P</button>
+      </div>
+
+      <!-- Keyboard Row 2 -->
+      <div class="keyboard-row">
+        <button class="key" data-key="a">A</button>
+        <button class="key" data-key="s">S</button>
+        <button class="key" data-key="d">D</button>
+        <button class="key" data-key="f">F</button>
+        <button class="key" data-key="g">G</button>
+        <button class="key" data-key="h">H</button>
+        <button class="key" data-key="j">J</button>
+        <button class="key" data-key="k">K</button>
+        <button class="key" data-key="l">L</button>
+      </div>
+
+      <!-- Keyboard Row 3: Enter, remaining letters, Backspace -->
+      <div class="keyboard-row">
+        <button class="key wide" data-key="Enter" aria-label="Submit guess">Enter</button>
+        <button class="key" data-key="z">Z</button>
+        <button class="key" data-key="x">X</button>
+        <button class="key" data-key="c">C</button>
+        <button class="key" data-key="v">V</button>
+        <button class="key" data-key="b">B</button>
+        <button class="key" data-key="n">N</button>
+        <button class="key" data-key="m">M</button>
+        <button class="key wide" data-key="Backspace" aria-label="Delete last letter">⌫</button>
+      </div>
+
+    </nav>
+
+  </main>
+
+  <!-- Game Scripts (Loaded in dependency order) -->
+  <script src="words.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

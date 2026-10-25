@@ -1,0 +1,499 @@
+/**
+ * style.css - Stylesheet for Wordy! (Cosy Pop Theme)
+ *
+ * Theme Characteristics:
+ * - Warm cream background, soft borders, and rounded card styling
+ * - Bubbly, friendly typography powered by Google Fonts 'Nunito'
+ * - Tactile 3D button and tile shadows for a satisfying, playful feel
+ * - Responsive breakpoints for desktop, tablet, and mobile screens
+ * - Accessible contrast and focus indicators
+ */
+
+/* ── Reset & Base Styles ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Warm Cosy Pop Palette */
+  --bg:           #FFF8F0;  /* Warm cream page background */
+  --surface:      #FFFFFF;  /* Crisp white card & tile surface */
+  --border:       #F0E6D8;  /* Soft biscuit border */
+  --border-dark:  #C0A898;  /* Active/focused border tone */
+  --text:         #3D2B1F;  /* Deep warm brown for high legibility */
+  --text-muted:   #A89080;  /* Lighter warm brown for captions */
+
+  /* Game Feedback Colours */
+  --green:        #5DB87A;  /* Cheerful green for correct letters */
+  --green-shadow: #4A9E68;  /* 3D bottom bevel for green */
+  --yellow:       #F5C842;  /* Sunshine yellow for present letters */
+  --yellow-shadow:#D9AA20;  /* 3D bottom bevel for yellow */
+  --grey:         #BEBEBE;  /* Neutral soft grey for absent tiles */
+  --grey-shadow:  #A0A0A0;  /* 3D bottom bevel for grey tiles */
+  --grey-dark:    #8E8E93;  /* High-contrast grey for absent keys */
+  --grey-dark-sh: #707075;  /* 3D bottom bevel for absent keys */
+
+  /* Interactive Accents */
+  --coral:        #FF6B6B;  /* Coral accent for buttons & title */
+  --coral-dark:   #E55A5A;  /* Coral shadow for 3D press effect */
+  --teal:         #2EC4B6;  /* Friendly teal for action buttons */
+  --teal-dark:    #249A8F;  /* Teal shadow */
+  --key-bg:       #EDE0D4;  /* Warm stone key default */
+  --key-shadow:   rgba(61, 43, 31, 0.12); /* Subtle key bevel */
+}
+
+html, body {
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-bottom: 32px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Decorative Rainbow Top Bar ── */
+.top-bar {
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg, #FF6B6B 0%, #F5C842 25%, #5DB87A 50%, #6EC6FF 75%, #C9B8F5 100%);
+  flex-shrink: 0;
+}
+
+/* ── Header ── */
+header {
+  width: 100%;
+  padding: 16px 20px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  box-shadow: 0 2px 10px rgba(61, 43, 31, 0.06);
+  margin-bottom: 20px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-content .emoji {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+header h1 {
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: 2.1rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: var(--coral);
+}
+
+header h1 .dot {
+  color: var(--green);
+}
+
+/* ── Game Layout Wrapper ── */
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 480px;
+  padding: 0 16px;
+}
+
+/* ── Status Message Pill ── */
+.status-container {
+  display: flex;
+  justify-content: center;
+}
+
+.status {
+  background: var(--surface);
+  border-radius: 50px;
+  padding: 6px 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  box-shadow: 0 2px 8px rgba(61, 43, 31, 0.08);
+  border: 1px solid var(--border);
+}
+
+/* ── 6x5 Game Grid ── */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  user-select: none;
+}
+
+.grid-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* Base Tile Styling */
+.tile {
+  width: 62px;
+  height: 62px;
+  border: 3px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: 1.9rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: 0 3px 0 var(--border);
+  transition: transform 0.1s ease, border-color 0.15s ease;
+}
+
+/* Active and Filled States */
+.tile.active {
+  border-color: var(--border-dark);
+}
+
+.tile.filled {
+  border-color: var(--border-dark);
+  transform: scale(1.04);
+  animation: bounce-in 0.15s ease;
+}
+
+.tile.locked {
+  background: var(--green);
+  color: #FFFFFF;
+  border-color: var(--green);
+  box-shadow: 0 3px 0 var(--green-shadow);
+}
+
+/* Evaluated Tile Colours */
+.tile.correct {
+  background: var(--green);
+  color: #FFFFFF;
+  border-color: var(--green);
+  box-shadow: 0 3px 0 var(--green-shadow);
+}
+
+.tile.present {
+  background: var(--yellow);
+  color: var(--text); /* Dark brown for high contrast on yellow */
+  border-color: var(--yellow);
+  box-shadow: 0 3px 0 var(--yellow-shadow);
+}
+
+.tile.absent {
+  background: var(--grey);
+  color: #FFFFFF;
+  border-color: var(--grey);
+  box-shadow: 0 3px 0 var(--grey-shadow);
+}
+
+/* ── Hint Button Section ── */
+.hint-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.hint-btn {
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 50px;
+  background: var(--coral);
+  color: #FFFFFF;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--coral-dark);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s ease;
+}
+
+.hint-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--coral-dark);
+}
+
+.hint-btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--coral-dark);
+}
+
+.hint-btn:disabled,
+.hint-btn.disabled {
+  background: var(--border);
+  color: var(--text-muted);
+  box-shadow: 0 3px 0 var(--border-dark);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.hint-caption {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ── Game Message Area & Play Again Button ── */
+.message-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 380px;
+  padding: 12px 20px;
+  background: var(--surface);
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  box-shadow: 0 3px 0 var(--border);
+  text-align: center;
+  transition: opacity 0.2s ease;
+}
+
+.message-area.hidden {
+  display: none;
+}
+
+.message-text {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.play-again-btn {
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  padding: 10px 28px;
+  border: none;
+  border-radius: 50px;
+  background: var(--teal);
+  color: #FFFFFF;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--teal-dark);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.play-again-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--teal-dark);
+}
+
+.play-again-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--teal-dark);
+}
+
+/* ── On-Screen Keyboard ── */
+.keyboard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  user-select: none;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.key {
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  height: 54px;
+  min-width: 38px;
+  flex: 1;
+  max-width: 42px;
+  border: none;
+  border-radius: 10px;
+  background: var(--key-bg);
+  color: var(--key-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  box-shadow: 0 3px 0 var(--key-shadow);
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
+}
+
+.key:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 0 var(--key-shadow);
+}
+
+.key:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--key-shadow);
+}
+
+.key.wide {
+  max-width: 64px;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+/* Evaluated Key Colours */
+.key.correct {
+  background: var(--green);
+  color: #FFFFFF;
+  box-shadow: 0 3px 0 var(--green-shadow);
+}
+
+.key.present {
+  background: var(--yellow);
+  color: var(--text);
+  box-shadow: 0 3px 0 var(--yellow-shadow);
+}
+
+.key.absent {
+  background: var(--grey-dark);
+  color: #FFFFFF;
+  box-shadow: 0 3px 0 var(--grey-dark-sh);
+}
+
+/* ── Accessibility & Focus Indicators ── */
+button:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 2px;
+}
+
+/* ── Toast Notification ── */
+.toast {
+  position: fixed;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: #FFFFFF;
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(61, 43, 31, 0.25);
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.toast.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-10px);
+}
+
+/* ── Keyframe Animations ── */
+@keyframes bounce-in {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.12); }
+  100% { transform: scale(1.04); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+.shake {
+  animation: shake 0.5s ease;
+}
+
+/* ── Responsive Rules ── */
+/* Tablet & Medium Phones */
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.85rem;
+  }
+
+  .grid {
+    gap: 6px;
+  }
+
+  .grid-row {
+    gap: 6px;
+  }
+
+  .tile {
+    width: 56px;
+    height: 56px;
+    font-size: 1.75rem;
+    border-radius: 10px;
+  }
+
+  .key {
+    height: 50px;
+    min-width: 34px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+  }
+
+  .key.wide {
+    max-width: 58px;
+  }
+}
+
+/* Small Mobile Screens (360px - 400px) */
+@media (max-width: 400px) {
+  .game {
+    padding: 0 8px;
+    gap: 12px;
+  }
+
+  .grid-row {
+    gap: 5px;
+  }
+
+  .tile {
+    width: 52px;
+    height: 52px;
+    font-size: 1.6rem;
+  }
+
+  .keyboard-row {
+    gap: 4px;
+  }
+
+  .key {
+    height: 46px;
+    min-width: 30px;
+    font-size: 0.75rem;
+  }
+
+  .key.wide {
+    max-width: 50px;
+    font-size: 0.7rem;
+  }
+
+  .hint-btn {
+    padding: 10px 24px;
+    font-size: 0.82rem;
+  }
+}
